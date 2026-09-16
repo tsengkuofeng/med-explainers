@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>從 PCOS 到 PMOS</title>
+<meta name="description" content="2026 年 6 月 Lancet 全球共識：多囊性卵巢症候群正式更名為 PMOS。互動式解說那些「囊腫」到底是什麼。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+/* ============================================================
+   從 PCOS 到 PMOS
+   色彩取自產科超音波本身：掃描的暖黑、卵泡邊緣的沙金、
+   以及一個臨床但不冰冷的石油綠。磚紅只用在「誤解」狀態。
+   ============================================================ */
+:root{
+  --scan:#0A0C0D;
+  --scan-2:#141819;
+  --ink:#14181A;
+  --ink-2:#414B4D;
+  --muted:#6C7877;
+  --paper:#EFF1EE;
+  --surface:#FFFFFF;
+  --sunk:#E5E9E5;
+  --line:#D5DAD6;
+  --line-2:#C0C8C2;
+  --accent:#0E5E63;
+  --accent-ink:#0A474B;
+  --accent-soft:#DCEAEA;
+  --alarm:#A6402F;
+  --alarm-soft:#F4E2DE;
+  --gold:#C8A96A;
+  --gold-dim:#8A7442;
+  --on-scan:#E8EDEC;
+  --on-scan-dim:#8A9694;
+  --serif:"Noto Serif TC","Songti TC",Georgia,serif;
+  --sans:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E4E9E6; --ink-2:#B0BAB6; --muted:#8A9691;
+    --paper:#111614; --surface:#171D1A; --sunk:#0D1211;
+    --line:#252E2A; --line-2:#334039;
+    --accent:#4FA8AC; --accent-ink:#7FC9CC; --accent-soft:#12302F;
+    --alarm:#D98A78; --alarm-soft:#301B17;
+    --gold:#C8A96A; --gold-dim:#A88F55;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E4E9E6; --ink-2:#B0BAB6; --muted:#8A9691;
+  --paper:#111614; --surface:#171D1A; --sunk:#0D1211;
+  --line:#252E2A; --line-2:#334039;
+  --accent:#4FA8AC; --accent-ink:#7FC9CC; --accent-soft:#12302F;
+  --alarm:#D98A78; --alarm-soft:#301B17;
+  --gold:#C8A96A; --gold-dim:#A88F55;
+}
+
+*{box-sizing:border-box}
+html{ -webkit-text-size-adjust:100% }
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16.5px; line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- 版面：中央閱讀欄 + 可滿版的儀器區塊 ---------- */
+.page{
+  display:grid;
+  grid-template-columns:1fr min(64ch, calc(100% - 32px)) 1fr;
+  row-gap:0;
+  padding-block:0 96px;
+}
+.page > *{ grid-column:2 }
+.page > .bleed{ grid-column:1 / -1 }
+
+section{ padding-block:52px 0 }
+h1,h2,h3{ text-wrap:balance; margin:0 }
+h1{
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(31px,6.4vw,50px); line-height:1.2; letter-spacing:-.015em;
+}
+h2{
+  font-family:var(--serif); font-weight:600;
+  font-size:clamp(22px,3.8vw,29px); line-height:1.38; margin-bottom:8px;
+}
+h3{ font-family:var(--sans); font-weight:700; font-size:16px; line-height:1.55 }
+p{ margin:0 0 18px }
+strong{ font-weight:700 }
+em{ font-style:normal; color:var(--accent-ink); font-weight:500 }
+
+.eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 16px;
+}
+.dek{ color:var(--muted); font-size:14.5px; margin:0 0 26px; max-width:52ch }
+.lede{ font-size:18px; line-height:1.8; color:var(--ink-2) }
+
+/* ---------- 抬頭 ---------- */
+.masthead{ padding-block:56px 0 }
+.fullname{
+  font-family:var(--mono); font-size:clamp(12px,2.6vw,14.5px);
+  letter-spacing:.02em; color:var(--accent-ink);
+  margin:20px 0 0; padding:14px 16px;
+  background:var(--accent-soft); border-radius:3px;
+  border-left:3px solid var(--accent);
+}
+.fullname b{ font-weight:500; color:var(--accent-ink) }
+.fullname span{ color:var(--muted) }
+
+/* ---------- 深淺／模式切換 ---------- */
+.modebar{
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  margin-top:26px; font-size:13.5px; color:var(--muted);
+}
+.seg{ display:inline-flex; background:var(--sunk); border:1px solid var(--line); border-radius:999px; padding:3px }
+.seg button{
+  font:inherit; font-size:13px; font-weight:500; cursor:pointer;
+  border:0; background:transparent; color:var(--muted);
+  padding:6px 15px; border-radius:999px; line-height:1.4;
+}
+.seg button[aria-pressed="true"]{ background:var(--surface); color:var(--accent-ink); box-shadow:0 1px 2px rgba(0,0,0,.08) }
+.seg button:focus-visible{ outline:2px solid var(--accent); outline-offset:2px }
+
+.pro-only{ display:none }
+body[data-mode="pro"] .pro-only{ display:block }
+body[data-mode="pro"] .pat-only{ display:none }
+
+/* ---------- 超音波面板 ---------- */
+.scanwrap{
+  background:var(--scan); margin-top:40px;
+  padding:26px 16px 30px;
+  border-block:1px solid var(--line-2);
+}
+.scaninner{ max-width:760px; margin-inline:auto }
+.scanhead{
+  display:flex; flex-wrap:wrap; gap:12px; justify-content:space-between; align-items:flex-end;
+  margin-bottom:16px;
+}
+.scanhead .t{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--on-scan-dim) }
+.scanhead .t b{ color:var(--on-scan); font-weight:500; display:block; letter-spacing:.08em; font-size:12px; margin-top:3px }
+
+.viewport{
+  position:relative; width:100%; aspect-ratio:4/3; max-width:100%;
+  background:#000; overflow:hidden; border-radius:2px;
+}
+.viewport canvas{ position:absolute; inset:0; width:100%; height:100% }
+
+/* 機器 HUD 文字 */
+.hud{
+  position:absolute; font-family:var(--mono); font-size:9.5px; letter-spacing:.08em;
+  color:#7E8A88; pointer-events:none; line-height:1.7;
+}
+.hud.tl{ top:8px; left:10px; white-space:nowrap }
+.hud.tr{ top:8px; right:10px; text-align:right; white-space:nowrap }
+.hud.bl{ bottom:8px; left:10px }
+
+/* 標註 */
+.anno{ position:absolute; transform:translate(-50%,-50%); pointer-events:none }
+.ring{
+  width:26px; height:26px; border-radius:50%;
+  border:2px solid var(--gold);
+  box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 0 14px rgba(200,169,106,.45);
+}
+.anno.bad .ring{ border-color:#E0604A; box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 0 14px rgba(224,96,74,.5) }
+.callout{
+  position:absolute; pointer-events:none;
+  font-family:var(--mono); font-size:11px; letter-spacing:.04em;
+  color:var(--gold); white-space:nowrap;
+  transform:translate(-50%,-50%);
+  background:rgba(6,9,9,.78); padding:7px 12px; border-radius:2px;
+  border:1px solid rgba(200,169,106,.28); text-align:center;
+}
+.callout.bad{ border-color:rgba(224,96,74,.32) }
+.callout.bad{ color:#E0604A }
+.callout i{ font-style:normal; display:block; font-family:var(--sans); font-size:12.5px; margin-top:2px; letter-spacing:0 }
+
+.scanfoot{
+  display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between;
+  margin-top:16px;
+}
+.scancap{ color:var(--on-scan-dim); font-size:13.5px; line-height:1.7; max-width:46ch; margin:0 }
+.scancap b{ color:var(--on-scan); font-weight:500 }
+.segdark{ background:#1C2222; border-color:#2A3231 }
+.segdark button{ color:var(--on-scan-dim) }
+.segdark button[aria-pressed="true"]{ background:#2E3736; color:var(--on-scan); box-shadow:none }
+
+/* ---------- 名字拆解 ---------- */
+.oldname{
+  font-family:var(--mono); font-size:clamp(15px,3.4vw,19px); letter-spacing:.04em;
+  color:var(--muted); margin:0 0 6px;
+}
+.oldname s{ color:var(--alarm); text-decoration-thickness:2px }
+.arrowdown{ font-family:var(--mono); color:var(--line-2); font-size:14px; margin:0 0 6px }
+
+.letters{ display:grid; gap:10px; margin-top:22px }
+.letter{
+  display:grid; grid-template-columns:52px 1fr; gap:16px; align-items:start;
+  width:100%; text-align:left; font:inherit; cursor:pointer;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+  padding:16px; color:inherit;
+}
+.letter:hover{ border-color:var(--line-2) }
+.letter:focus-visible{ outline:2px solid var(--accent); outline-offset:2px }
+.letter[aria-expanded="true"]{ border-color:var(--accent); background:var(--accent-soft) }
+.letter .glyph{
+  font-family:var(--serif); font-weight:700; font-size:34px; line-height:1;
+  color:var(--accent); text-align:center; padding-top:2px;
+}
+.letter[data-strike] .glyph{ color:var(--alarm); text-decoration:line-through; text-decoration-thickness:3px }
+.letter .en{ font-family:var(--mono); font-size:13px; letter-spacing:.02em; color:var(--ink) }
+.letter .zh{ font-size:14.5px; color:var(--ink-2); margin-top:2px }
+.letter .body{ font-size:14.5px; line-height:1.8; color:var(--ink-2); margin-top:12px; display:none }
+.letter[aria-expanded="true"] .body{ display:block }
+.letter .mech{
+  font-family:var(--mono); font-size:12px; line-height:1.9; color:var(--accent-ink);
+  margin-top:10px; padding:10px 12px; background:var(--surface); border-radius:3px;
+  border:1px dashed var(--line-2); white-space:normal;
+}
+
+/* ---------- 變 / 沒變 ---------- */
+.ledger{ margin-top:22px; border-top:1px solid var(--line-2) }
+.row{
+  display:grid; grid-template-columns:104px 1fr; gap:16px;
+  padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline;
+}
+.tag{
+  font-family:var(--mono); font-size:11px; letter-spacing:.1em; padding:3px 0;
+  color:var(--muted);
+}
+.tag.keep{ color:var(--accent-ink) }
+.tag.change{ color:var(--gold-dim) }
+.row .what{ font-size:15.5px; line-height:1.7 }
+.row .what small{ display:block; color:var(--muted); font-size:13px; margin-top:2px }
+
+/* ---------- 兩條長度幾乎一樣的 bar ---------- */
+.bars{ margin-top:20px; display:grid; gap:16px }
+.bar .lab{ display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px }
+.bar .lab b{ font-family:var(--mono); font-weight:500; font-variant-numeric:tabular-nums }
+.bar .track{ height:12px; background:var(--sunk); border-radius:2px; overflow:hidden }
+.bar .fill{ height:100%; background:var(--accent); border-radius:2px }
+.bar.lean .fill{ background:var(--gold) }
+.barnote{ font-size:14px; color:var(--muted); margin-top:14px }
+
+/* ---------- 時間軸 ---------- */
+.timeline{ margin-top:22px; display:grid; gap:0 }
+.tl{ display:grid; grid-template-columns:78px 1fr; gap:18px; padding-bottom:22px; position:relative }
+.tl::before{ content:""; position:absolute; left:calc(78px + 9px); top:8px; bottom:-8px; width:1px; background:var(--line) }
+.tl:last-child{ padding-bottom:0 }
+.tl:last-child::before{ display:none }
+.tl .when{ font-family:var(--mono); font-size:12px; color:var(--muted); text-align:right; padding-top:2px; font-variant-numeric:tabular-nums }
+.tl .dot{ position:absolute; left:78px; top:8px; width:19px; height:19px; display:grid; place-items:center }
+.tl .dot i{ width:9px; height:9px; border-radius:50%; background:var(--line-2); display:block }
+.tl.now .dot i{ background:var(--accent); box-shadow:0 0 0 4px var(--accent-soft) }
+.tl .what{ padding-left:20px }
+.tl .what b{ display:block; font-size:15px }
+.tl .what span{ font-size:14px; color:var(--muted) }
+
+/* ---------- 常見問題 ---------- */
+details{ border-bottom:1px solid var(--line) }
+details summary{
+  cursor:pointer; list-style:none; padding:15px 28px 15px 0; position:relative;
+  font-weight:500; font-size:15.5px;
+}
+details summary::-webkit-details-marker{ display:none }
+details summary::after{
+  content:"+"; position:absolute; right:4px; top:50%; transform:translateY(-50%);
+  font-family:var(--mono); color:var(--muted); font-size:17px;
+}
+details[open] summary::after{ content:"−" }
+details summary:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; border-radius:3px }
+details .ans{ padding:0 0 18px; font-size:15px; color:var(--ink-2); line-height:1.8 }
+details .ans p:last-child{ margin-bottom:0 }
+
+/* ---------- 注意框 ---------- */
+.note{
+  margin-top:24px; padding:18px 20px; border-radius:4px;
+  background:var(--accent-soft); border-left:3px solid var(--accent);
+}
+.note p{ margin:0; font-size:15px; line-height:1.8; color:var(--accent-ink) }
+.note p + p{ margin-top:10px }
+
+/* ---------- 頁尾 ---------- */
+footer{ margin-top:64px; padding-top:26px; border-top:1px solid var(--line-2); font-size:13.5px; color:var(--muted) }
+footer .cite{ font-family:var(--mono); font-size:12px; line-height:1.85; color:var(--ink-2); margin-top:10px; word-break:break-word }
+footer a{ color:var(--accent-ink) }
+.disclaimer{ margin-top:22px; font-size:13px; line-height:1.8 }
+
+@media (max-width:560px){
+  .row{ grid-template-columns:1fr; gap:4px }
+  .tl{ grid-template-columns:60px 1fr; gap:12px }
+  .tl::before{ left:calc(60px + 9px) }
+  .tl .dot{ left:60px }
+  .letter{ grid-template-columns:40px 1fr; gap:12px }
+  .letter .glyph{ font-size:28px }
+}
+@media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important } }
+</style>
+</head>
+<body data-mode="pat">
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">2026 年 6 月 · The Lancet 全球共識</p>
+    <h1>那些「囊腫」<br>從來就不是囊腫</h1>
+    <p class="fullname">
+      <b>Polyendocrine Metabolic Ovarian Syndrome</b><br>
+      <span>多囊性卵巢症候群（PCOS）的新名稱 · 縮寫 PMOS</span>
+    </p>
+    <div class="modebar">
+      <span>閱讀模式</span>
+      <span class="seg" role="group" aria-label="閱讀模式">
+        <button type="button" id="mode-pat" aria-pressed="true">給病人</button>
+        <button type="button" id="mode-pro" aria-pressed="false">給醫學生</button>
+      </span>
+    </div>
+  </header>
+
+  <!-- ============ 超音波 ============ -->
+  <div class="bleed scanwrap">
+    <div class="scaninner">
+      <div class="scanhead">
+        <div class="t">經陰道超音波 · 卵巢橫切<b id="scan-state">你以為看到的</b></div>
+        <span class="seg segdark" role="group" aria-label="影像標註">
+          <button type="button" id="view-myth" aria-pressed="true">你以為看到的</button>
+          <button type="button" id="view-real" aria-pressed="false">實際上是什麼</button>
+        </span>
+      </div>
+
+      <div class="viewport" id="viewport">
+        <canvas id="scan" aria-label="卵巢超音波示意圖：周邊排列多個無回音的小圓，即發育停滯的卵泡"></canvas>
+        <div class="hud tl">TIS 0.4 · MI 0.8<br>GAIN 62 · DEPTH 6.0cm</div>
+        <div class="hud tr">TV 6.5 MHz<br>FR 24Hz</div>
+        <div class="hud bl">RT OVARY</div>
+      </div>
+
+      <div class="scanfoot">
+        <p class="scancap" id="scan-caption">
+          <b>很多人以為</b>卵巢裡長了一堆水泡或腫瘤 —— 這正是「多囊」兩個字帶來的誤會，困擾病人超過七十年。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <p class="lede">超音波上那些黑色小圓，是<em>還沒長大就停下來的卵泡</em>。它們不是腫瘤、不會變成癌症，也不需要開刀拿掉。</p>
+    <p>因為神經內分泌與代謝異常，卵泡無法完成成熟與排卵，於是累積在卵巢皮質，排成一圈。把它叫做「囊腫」，等於用一個錯誤的解剖名詞當疾病名稱 —— 而這一叫，就是七十年。</p>
+    <p class="pro-only">在超音波上這個排列有個名字：<em>string of pearls sign</em>（珍珠項鍊徵象）。2023 年國際指引已允許以 AMH 取代超音波作為成人的形態學判準之一。</p>
+  </section>
+
+  <!-- ============ 名字拆解 ============ -->
+  <section>
+    <p class="eyebrow">名字怎麼換的</p>
+    <h2>拿掉一個錯字，補上兩件事實</h2>
+    <p class="dek">點任一列展開說明。</p>
+
+    <p class="oldname">Poly<s>cystic</s> Ovary Syndrome</p>
+    <p class="arrowdown">↓</p>
+    <p class="oldname" style="color:var(--accent-ink)"><b>Poly</b>endocrine <b>M</b>etabolic <b>O</b>varian <b>S</b>yndrome</p>
+
+    <div class="letters">
+      <button type="button" class="letter" aria-expanded="false">
+        <span class="glyph">P</span>
+        <span>
+          <span class="en">Polyendocrine</span>
+          <span class="zh">多重內分泌</span>
+          <span class="body">
+            不只卵巢。這是好幾個荷爾蒙系統一起失調 —— 下視丘、腦下垂體、卵巢、腎上腺、胰島素，互相牽動。
+            <span class="mech pro-only">GnRH 脈衝頻率↑ → LH↑（LH/FSH ratio↑）→ 卵巢 theca cell 雄性素合成↑</span>
+          </span>
+        </span>
+      </button>
+
+      <button type="button" class="letter" aria-expanded="false">
+        <span class="glyph">M</span>
+        <span>
+          <span class="en">Metabolic</span>
+          <span class="zh">代謝</span>
+          <span class="body">
+            胰島素、血糖、血脂、心血管健康都需要被一起照顧。這是舊名字完全沒有提到、卻影響一輩子的部分。
+            <span class="mech pro-only">高胰島素血症 → 肝臟 SHBG 合成↓ → 游離睪固酮↑，並直接刺激 theca cell</span>
+          </span>
+        </span>
+      </button>
+
+      <button type="button" class="letter" aria-expanded="false">
+        <span class="glyph">O</span>
+        <span>
+          <span class="en">Ovarian</span>
+          <span class="zh">卵巢</span>
+          <span class="body">
+            保留原本就有的排卵功能障礙與生育相關問題。這部分沒有被否定，只是不再是唯一的重點。
+          </span>
+        </span>
+      </button>
+
+      <button type="button" class="letter" data-strike aria-expanded="false">
+        <span class="glyph">C</span>
+        <span>
+          <span class="en">Cystic　<span style="color:var(--alarm)">已刪除</span></span>
+          <span class="zh">囊腫</span>
+          <span class="body">
+            因為那不是事實。共識文件把移除這個字列為第一優先 —— 它造成的恐懼與診斷混淆，是這次改名最直接的動機。
+          </span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ 變 / 沒變 ============ -->
+  <section>
+    <p class="eyebrow">最重要的一段</p>
+    <h2>改的是名字，不是你的病</h2>
+    <p class="dek">如果這一頁你只看一段，請看這裡。</p>
+
+    <div class="ledger">
+      <div class="row"><span class="tag keep">沒有改變</span><span class="what">診斷標準<small>Rotterdam criteria 三取二，完全不變</small></span></div>
+      <div class="row"><span class="tag keep">沒有改變</span><span class="what">你已經拿到的診斷<small>病歷上寫 PCOS 仍然有效</small></span></div>
+      <div class="row"><span class="tag keep">沒有改變</span><span class="what">治療方式<small>不需要換藥，也不需要重新檢查</small></span></div>
+      <div class="row"><span class="tag keep">沒有改變</span><span class="what">疾病本身<small>你的身體沒有任何變化</small></span></div>
+      <div class="row"><span class="tag change">改變了</span><span class="what">名稱與疾病框架<small>從「卵巢問題」擴大為「多系統內分泌代謝問題」</small></span></div>
+      <div class="row"><span class="tag change">改變了</span><span class="what">照護的重心<small>更早、更主動地評估胰島素阻抗與心血管風險</small></span></div>
+    </div>
+
+    <div class="note">
+      <p><strong>給準備考試的人：</strong>如果題目問「PMOS 的診斷標準如何改變」—— 那是陷阱題。診斷標準沒有改變。</p>
+    </div>
+  </section>
+
+  <!-- ============ 代謝 ≠ 你的錯 ============ -->
+  <section>
+    <p class="eyebrow">關於「代謝」這兩個字</p>
+    <h2>這不是胖出來的病</h2>
+    <p>新名字裡有「代謝」，很容易被讀成「你就是太胖」。事實不是這樣 —— 這個病有<em>很強的遺傳成分</em>，而胰島素阻抗在體重正常的人身上一樣普遍。</p>
+
+    <div class="bars">
+      <div class="bar">
+        <div class="lab"><span>所有病人</span><b>85%</b></div>
+        <div class="track"><div class="fill" style="width:85%"></div></div>
+      </div>
+      <div class="bar lean">
+        <div class="lab"><span>體重正常的病人</span><b>75%</b></div>
+        <div class="track"><div class="fill" style="width:75%"></div></div>
+      </div>
+    </div>
+    <p class="barnote">兩條長度幾乎一樣 —— 這就是重點。有胰島素阻抗的比例。</p>
+
+    <p style="margin-top:22px">把「代謝」寫進名字，是為了提醒醫療人員主動幫你注意血糖、血脂與心血管風險，不是要把責任推到你的體重上。這一點，連參與制定新名字的專家都特別提出來提醒過。</p>
+  </section>
+
+  <!-- ============ 為什麼值得改 ============ -->
+  <section>
+    <p class="eyebrow">為什麼要花這麼大力氣</p>
+    <h2>名字決定了誰來照顧你</h2>
+    <p>舊名字只講「卵巢」，讓很多人以為這單純是婦科問題，結果在婦產科、內分泌科、皮膚科、身心科之間被轉來轉去。<em>全球超過七成的病人經歷過診斷延誤。</em></p>
+    <p>名字不只是標籤。它決定了誰負責照顧你、你被轉診到哪裡，以及醫學界願意投入多少資源研究它。</p>
+    <p class="pro-only">這次共識由 Monash 大學 Helena Teede 教授領銜，56 個學術、臨床與病友組織參與，收集超過 14,300 份回應，方法包含 Delphi 問卷、nominal group workshop、語言與行銷評估，以及實施規劃。病人支持度 86%，醫療專業人員 71%。</p>
+  </section>
+
+  <!-- ============ 時間軸 ============ -->
+  <section>
+    <p class="eyebrow">接下來會怎樣</p>
+    <h2>三年過渡，你什麼都不用做</h2>
+
+    <div class="timeline">
+      <div class="tl now">
+        <span class="when">2026.06</span><span class="dot"><i></i></span>
+        <span class="what"><b>共識發表</b><span>Lancet 刊出，PMOS 正式成為新名稱</span></span>
+      </div>
+      <div class="tl">
+        <span class="when">2026–2028</span><span class="dot"><i></i></span>
+        <span class="what"><b>兩個名字並行</b><span>診間、衛教資料、病歷上會同時出現 PCOS 與 PMOS</span></span>
+      </div>
+      <div class="tl">
+        <span class="when">過渡期內</span><span class="dot"><i></i></span>
+        <span class="what"><b>納入國際疾病分類</b><span>與 WHO 洽談納入 ICD 系統</span></span>
+      </div>
+      <div class="tl">
+        <span class="when">2028</span><span class="dot"><i></i></span>
+        <span class="what"><b>國際指引更新</b><span>全面完成改名</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 常見問題 ============ -->
+  <section>
+    <p class="eyebrow">常見問題</p>
+    <h2>你可能會想問</h2>
+
+    <details>
+      <summary>我要特地回診跟醫師確認嗎？</summary>
+      <div class="ans"><p>不用特地跑一趟。下次回診時提一下就好。</p></div>
+    </details>
+    <details>
+      <summary>病歷上寫 PCOS 還算數嗎？</summary>
+      <div class="ans"><p>算數。接下來三年兩個名字會並行使用，醫療院所和保險系統都還認得 PCOS。</p></div>
+    </details>
+    <details>
+      <summary>治療會改嗎？要換藥嗎？</summary>
+      <div class="ans"><p>不會。目前的治療建議完全沒有改變，也不需要重新檢查。</p></div>
+    </details>
+    <details>
+      <summary>中文要怎麼講？</summary>
+      <div class="ans"><p>中文的正式譯名還在討論中，目前沒有官方統一版本。現階段講「PMOS」或「多囊性卵巢症候群」，醫療人員都聽得懂。</p></div>
+    </details>
+    <details>
+      <summary>這個病會影響生育嗎？</summary>
+      <div class="ans"><p>排卵功能障礙確實會讓受孕變得比較困難，但這是可以治療的，而且多數人在適當處置下能夠懷孕。這部分請和你的主治醫師個別討論。</p></div>
+    </details>
+    <details class="pro-only">
+      <summary>這次改名有什麼爭議？</summary>
+      <div class="ans">
+        <p>共識作者自己提出了四點：低中收入國家的參與度偏低且自願填答有選擇偏差；三年雙名並行可能造成診斷紀錄分裂與編碼不一致；「metabolic」有強化體重歸咎的風險；多數語系尚未完成在地化翻譯。</p>
+        <p>最根本的一點是：改名是否真能縮短診斷延遲、改善預後，<strong>目前完全沒有前瞻性資料</strong>。作者坦承光改名字不夠，真正的改變需要教育投資與指引改革。</p>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>資料來源：The Lancet 2026 年 6 月全球共識。本頁最後查證於 2026 年 9 月 16 日。</p>
+    <p class="cite">Teede HJ, Bahri Khomami M, Morman R, Laven JSE, Joham AE, Costello MF, et al. Polyendocrine metabolic ovarian syndrome, the new name for polycystic ovary syndrome: a multistep global consensus process. Lancet. 2026;407(10545):2329-39. doi:10.1016/S0140-6736(26)00717-8</p>
+    <p class="disclaimer">本頁為衛教資訊，不能取代個別的醫療建議。超音波影像為程式繪製的示意圖，非真實臨床影像。如果你對自己的狀況有任何疑問，請和你的主治醫師討論。</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  document.body.dataset.mode = document.body.dataset.mode || "pat";
+
+  /* ---------- 閱讀模式 ---------- */
+  var mPat = document.getElementById("mode-pat");
+  var mPro = document.getElementById("mode-pro");
+  function setMode(m) {
+    document.body.dataset.mode = m;
+    mPat.setAttribute("aria-pressed", String(m === "pat"));
+    mPro.setAttribute("aria-pressed", String(m === "pro"));
+    try { localStorage.setItem("pmos-mode", m); } catch (e) {}
+  }
+  mPat.addEventListener("click", function () { setMode("pat"); });
+  mPro.addEventListener("click", function () { setMode("pro"); });
+  try {
+    var saved = localStorage.getItem("pmos-mode");
+    if (saved === "pro") setMode("pro");
+  } catch (e) {}
+
+  /* ---------- 名字拆解 ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll(".letter"), function (btn) {
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+    });
+  });
+
+  /* ---------- 超音波 ----------
+     固定亂數種子，讓每次載入畫出同一張影像 —— 醫學影像不該每次重洗。 */
+  var canvas = document.getElementById("scan");
+  var viewport = document.getElementById("viewport");
+  var ctx = canvas.getContext("2d");
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  /* 卵泡：沿卵巢橢圓周邊排列（string of pearls），位置以 0–1 的比例表示 */
+  var OVARY = { cx: 0.50, cy: 0.56, rx: 0.255, ry: 0.205 };
+  var FOLLICLES = (function () {
+    var out = [], rnd = mulberry32(7), n = 11;
+    for (var i = 0; i < n; i++) {
+      var a = (i / n) * Math.PI * 2 + 0.35;
+      var k = 0.66 + rnd() * 0.2;
+      out.push({
+        x: OVARY.cx + Math.cos(a) * OVARY.rx * k,
+        y: OVARY.cy + Math.sin(a) * OVARY.ry * k,
+        r: 0.023 + rnd() * 0.014
+      });
+    }
+    return out;
+  })();
+
+  function draw() {
+    var box = viewport.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = Math.max(320, Math.round(box.width));
+    var H = Math.max(240, Math.round(box.height));
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, W, H);
+
+    /* 扇形掃描區 */
+    var apexX = W / 2, apexY = -H * 0.34, spread = 0.82, R = H * 1.62;
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(apexX, apexY);
+    ctx.arc(apexX, apexY, R, Math.PI / 2 - spread, Math.PI / 2 + spread);
+    ctx.closePath();
+    ctx.clip();
+
+    /* 組織底色：近場亮、遠場衰減 */
+    var bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, "rgba(96,93,86,0.55)");
+    bg.addColorStop(0.42, "rgba(78,76,70,0.52)");
+    bg.addColorStop(1, "rgba(34,33,31,0.42)");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    /* 組織斑點（speckle）：中場較亮，側緣與深部衰減 */
+    var rnd = mulberry32(42);
+    var dots = Math.round(W * H / 7);
+    for (var i = 0; i < dots; i++) {
+      var x = rnd() * W, y = rnd() * H;
+      var dx = (x - W / 2) / (W / 2);
+      var depth = y / H;
+      var atten = (1 - Math.min(1, Math.abs(dx) * 0.65)) * (1 - depth * 0.40);
+      var v = rnd();
+      var a = Math.max(0, v * v * 0.95 * atten);
+      if (a < 0.015) continue;
+      var g = Math.round(128 + v * 118);
+      ctx.fillStyle = "rgba(" + g + "," + (g - 4) + "," + (g - 11) + "," + a.toFixed(3) + ")";
+      ctx.fillRect(x, y, 1.6, 1.6);
+    }
+
+    /* 卵巢實質：略亮一圈 */
+    var ox = OVARY.cx * W, oy = OVARY.cy * H, orx = OVARY.rx * W, ory = OVARY.ry * H;
+    ctx.save();
+    ctx.beginPath();
+    ctx.ellipse(ox, oy, orx, ory, 0, 0, Math.PI * 2);
+    ctx.clip();
+    var rnd2 = mulberry32(99);
+    for (var j = 0; j < Math.round(orx * ory / 1.6); j++) {
+      var px = ox - orx + rnd2() * orx * 2;
+      var py = oy - ory + rnd2() * ory * 2;
+      var vv = rnd2();
+      ctx.fillStyle = "rgba(" + Math.round(152 + vv * 96) + "," + Math.round(148 + vv * 96) + "," + Math.round(140 + vv * 92) + "," + (vv * vv * 0.75).toFixed(3) + ")";
+      ctx.fillRect(px, py, 1.6, 1.6);
+    }
+    ctx.restore();
+
+    /* 卵巢邊界 */
+    ctx.strokeStyle = "rgba(214,208,194,0.16)";
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.ellipse(ox, oy, orx, ory, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    /* 卵泡：無回音（黑）+ 後方回音增強（亮邊） */
+    FOLLICLES.forEach(function (f) {
+      var fx = f.x * W, fy = f.y * H, fr = f.r * Math.min(W, H) * 1.35;
+      /* 無回音的液體：挖成黑 */
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+      var hole = ctx.createRadialGradient(fx, fy, fr * 0.78, fx, fy, fr * 1.04);
+      hole.addColorStop(0, "rgba(0,0,0,1)");
+      hole.addColorStop(0.82, "rgba(0,0,0,0.98)");
+      hole.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = hole;
+      ctx.beginPath();
+      ctx.arc(fx, fy, fr * 1.04, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      /* 後方回音增強：亮帶集中在深部（下方） */
+      ctx.save();
+      var boost = ctx.createRadialGradient(fx, fy + fr * 0.55, fr * 0.2, fx, fy + fr * 0.55, fr * 1.25);
+      boost.addColorStop(0, "rgba(232,226,208,0.30)");
+      boost.addColorStop(0.55, "rgba(232,226,208,0.13)");
+      boost.addColorStop(1, "rgba(232,226,208,0)");
+      ctx.fillStyle = boost;
+      ctx.beginPath();
+      ctx.arc(fx, fy + fr * 0.55, fr * 1.25, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    ctx.restore();
+
+    /* 暗角：讓畫面邊緣自然收掉，而不是硬邊 */
+    var vig = ctx.createRadialGradient(W / 2, H * 0.52, Math.min(W, H) * 0.24, W / 2, H * 0.52, Math.max(W, H) * 0.78);
+    vig.addColorStop(0, "rgba(0,0,0,0)");
+    vig.addColorStop(0.62, "rgba(0,0,0,0.35)");
+    vig.addColorStop(1, "rgba(0,0,0,0.92)");
+    ctx.fillStyle = vig;
+    ctx.fillRect(0, 0, W, H);
+
+    /* 近場的一點壓暗，模擬探頭貼合面 */
+    var topFade = ctx.createLinearGradient(0, 0, 0, H * 0.22);
+    topFade.addColorStop(0, "rgba(0,0,0,0.75)");
+    topFade.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = topFade;
+    ctx.fillRect(0, 0, W, H * 0.22);
+
+    placeAnnotations(W, H);
+  }
+
+  /* ---------- 標註 ---------- */
+  var state = "myth";
+  var annoLayer = [];
+
+  function clearAnnotations() {
+    annoLayer.forEach(function (el) { el.remove(); });
+    annoLayer = [];
+  }
+
+  function add(cls, styleObj, html) {
+    var el = document.createElement("div");
+    el.className = cls;
+    Object.keys(styleObj).forEach(function (k) { el.style[k] = styleObj[k]; });
+    if (html) el.innerHTML = html;
+    viewport.appendChild(el);
+    annoLayer.push(el);
+    return el;
+  }
+
+  function placeAnnotations(W, H) {
+    clearAnnotations();
+    var bad = state === "myth";
+
+    /* 圈出三顆代表性的卵泡 */
+    [0, 4, 8].forEach(function (i) {
+      var f = FOLLICLES[i];
+      var ring = add("anno" + (bad ? " bad" : ""), {
+        left: (f.x * 100) + "%",
+        top: (f.y * 100) + "%"
+      });
+      var inner = document.createElement("div");
+      inner.className = "ring";
+      var d = f.r * Math.min(W, H) * 3.6;
+      inner.style.width = d + "px";
+      inner.style.height = d + "px";
+      ring.appendChild(inner);
+    });
+
+    if (bad) {
+      add("callout bad", { left: "50%", top: "21%" },
+        'FIG. 1<i>「卵巢裡長了一堆水泡？」</i>');
+      add("callout bad", { left: "50%", top: "88%" },
+        '<i>這是最常見的誤解</i>');
+    } else {
+      add("callout", { left: "50%", top: "21%" },
+        'FIG. 1<i>發育停滯的卵泡（arrested follicles）</i>');
+      add("callout", { left: "50%", top: "88%" },
+        '<i>不是腫瘤 · 不會癌化 · 不需開刀</i>');
+    }
+  }
+
+  /* ---------- 切換 ---------- */
+  var bMyth = document.getElementById("view-myth");
+  var bReal = document.getElementById("view-real");
+  var label = document.getElementById("scan-state");
+  var caption = document.getElementById("scan-caption");
+
+  var TEXT = {
+    myth: {
+      label: "你以為看到的",
+      cap: "<b>很多人以為</b>卵巢裡長了一堆水泡或腫瘤 —— 這正是「多囊」兩個字帶來的誤會，困擾病人超過七十年。"
+    },
+    real: {
+      label: "實際上是什麼",
+      cap: "<b>實際上</b>那是還沒長大就停下來的卵泡，沿著卵巢周邊排成一圈。它們不是腫瘤、不會變成癌症，也不需要開刀拿掉。"
+    }
+  };
+
+  function setView(s) {
+    state = s;
+    bMyth.setAttribute("aria-pressed", String(s === "myth"));
+    bReal.setAttribute("aria-pressed", String(s === "real"));
+    label.textContent = TEXT[s].label;
+    caption.innerHTML = TEXT[s].cap;
+    var box = viewport.getBoundingClientRect();
+    placeAnnotations(Math.round(box.width), Math.round(box.height));
+  }
+
+  bMyth.addEventListener("click", function () { setView("myth"); });
+  bReal.addEventListener("click", function () { setView("real"); });
+
+  /* ---------- 啟動 ---------- */
+  draw();
+  var t = null;
+  window.addEventListener("resize", function () {
+    clearTimeout(t);
+    t = setTimeout(draw, 160);
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { draw(); });
+  }
+})();
+</script>
+
+</body>
+</html>
